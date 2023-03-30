@@ -33,6 +33,7 @@ public class Main {
 	                System.out.println("4. View all bids of a tender");
 	                System.out.println("5. Assign tender to a vendor");
 	                System.out.println("6. Logout");
+	                System.out.println("0. Main Menu");
 
 	                System.out.print("\nEnter your choice: ");
 	                choice = input.next();
