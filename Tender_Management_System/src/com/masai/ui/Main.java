@@ -2,15 +2,81 @@ package com.masai.UI;
 
 import java.util.Scanner;
 
+import exception.NoRecordFoundException;
+
 public class Main {
 	
-	static void Vendor(Scanner sc) {
+static void VendorLogin(Scanner sc) throws NoRecordFoundException {
+		
+		if(IsVendorLogged.isLogged) {
+			Vendor(sc);
+		}else {
+			System.out.println("Enter Username!");
+			String username = sc.next();
+			System.out.println("Enter Password!");
+			String password = sc.next();
+			
+			
+			
+		}	
+	}
+	
+	static void Vendor(Scanner input) {
+		System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
 		System.out.println("Welcome Vendor");
+		int choice = 0;
+
+        while (true) {
+//            System.out.println("Welcome " + vendor.getUsername() + "!");
+            System.out.println("1. Update Account Details");
+            System.out.println("2. View Current Tenders");
+            System.out.println("3. Place Bid on Tender");
+            System.out.println("4. View Bid History");
+            System.out.println("5. Search Tender by ID or Date Range");
+            System.out.println("6. Change Password");
+            System.out.println("0. Logout");
+            System.out.print("Enter your choice: ");
+
+            try {
+                choice = input.nextInt();
+            } catch (Exception e) {
+                System.out.println("Invalid input! Please enter a number.");
+                input.next();
+                continue;
+            }
+
+            switch (choice) {
+                case 0:
+                    return;
+                case 1:
+//                    updateAccountDetails();
+                    break;
+                case 2:
+//                    viewCurrentTenders();
+                    break;
+                case 3:
+//                    placeBidOnTender();
+                    break;
+                case 4:
+//                    viewBidHistory();
+                    break;
+                case 5:
+//                    searchTender();
+                    break;
+                case 6:
+//                    changePassword();
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please choose again.");
+                    break;
+            }
+        }
+		
 		
 	}
 
 	static void Administrator(Scanner input) {
-		System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-***-");
+		System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
 		System.out.println("Welcome Administrator");
 		 String username = "admin";
 	        String password = "admin";
