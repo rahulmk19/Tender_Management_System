@@ -6,24 +6,29 @@ import exception.NoRecordFoundException;
 
 public class Main {
 	
-static void VendorLogin(Scanner sc) throws NoRecordFoundException {
-		
+	static void VendorLogin(Scanner sc) throws NoRecordFoundException {
+			
 		if(IsVendorLogged.isLogged) {
-			Vendor(sc);
+				Vendor(sc);
 		}else {
 			System.out.println("Enter Username!");
 			String username = sc.next();
 			System.out.println("Enter Password!");
-			String password = sc.next();
-			
-			
-			
+			String password = sc.next();	
 		}	
 	}
+
+	static void VendorSignUp(Scanner sc) throws NoRecordFoundException {
+		
+			
+	}
 	
+
 	static void Vendor(Scanner input) {
 		System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
 		System.out.println("Welcome Vendor");
+		System.out.println("1: Login");
+		System.out.println("2: Sign Up");
 		int choice = 0;
 
         while (true) {
@@ -49,22 +54,22 @@ static void VendorLogin(Scanner sc) throws NoRecordFoundException {
                 case 0:
                     return;
                 case 1:
-//                    updateAccountDetails();
+                    VendorUI.updateAccountDetails(input);
                     break;
                 case 2:
-//                    viewCurrentTenders();
+                	VendorUI.viewCurrentTenders();
                     break;
                 case 3:
-//                    placeBidOnTender();
+                	VendorUI.placeBidOnTender(input);
                     break;
                 case 4:
-//                    viewBidHistory();
+                	VendorUI.viewBidHistory();
                     break;
                 case 5:
-//                    searchTender();
+                	VendorUI.searchTender(input);
                     break;
                 case 6:
-//                    changePassword();
+                	VendorUI.changePassword(input);
                     break;
                 default:
                     System.out.println("Invalid choice! Please choose again.");
@@ -93,41 +98,41 @@ static void VendorLogin(Scanner sc) throws NoRecordFoundException {
 	            do {
 	                // Menu
 	                System.out.println("MENU");
+	                System.out.println("0. Main Menu");
 	                System.out.println("1. View all vendors");
 	                System.out.println("2. Create new tender");
 	                System.out.println("3. View all tenders");
 	                System.out.println("4. View all bids of a tender");
 	                System.out.println("5. Assign tender to a vendor");
 	                System.out.println("6. Logout");
-	                System.out.println("0. Main Menu");
 
 	                System.out.print("\nEnter your choice: ");
 	                choice = input.next();
 
 	                switch (choice) {
 	                    case "1":
-	                        // View all vendors
-	                        System.out.println("View all vendors...");
+	                    	AdministratorUI.viewVendors();
+	                        System.out.println("1: View all vendors...");
 	                        break;
 	                    case "2":
-	                        // Create new tender
-	                        System.out.println("Create new tender...");
+	                    	AdministratorUI.createTender();
+	                        System.out.println("2: Create new tender...");
 	                        break;
 	                    case "3":
-	                        // View all tenders
-	                        System.out.println("View all tenders...");
+	                    	AdministratorUI.viewTenders();
+	                        System.out.println("3: View all tenders...");
 	                        break;
 	                    case "4":
-	                        // View all bids of a tender
-	                        System.out.println("View all bids of a tender...");
+	                    	AdministratorUI.viewBids();
+	                        System.out.println("4: View all bids of a tender...");
 	                        break;
 	                    case "5":
-	                        // Assign tender to a vendor
-	                        System.out.println("Assign tender to a vendor...");
+	                    	AdministratorUI.assignTender();
+	                        System.out.println("5: Assign tender to a vendor...");
 	                        break;
 	                    case "6":
 	                        // Logout
-	                        System.out.println("Logout successful.");
+	                        System.out.println("6: Logout successful.");
 	                        break;
 	                    default:
 	                        System.out.println("Invalid choice.");
@@ -136,7 +141,7 @@ static void VendorLogin(Scanner sc) throws NoRecordFoundException {
 	            } while (!choice.equals("6"));
 
 	        } else {
-	            System.out.println("Invalid username or password.");
+	            System.out.println("Invalid Username and Password.");
 	        }
 	}
 
@@ -146,7 +151,7 @@ static void VendorLogin(Scanner sc) throws NoRecordFoundException {
 		
 		do {
 			System.out.println("1. Administrator");
-			System.out.println("2. Vendor");
+			System.out.println("2. Vendor Login");
 			
 			choice=sc.nextInt();
 			switch(choice) {
@@ -157,7 +162,7 @@ static void VendorLogin(Scanner sc) throws NoRecordFoundException {
 				case 2:
 					Vendor(sc);
 					break;
-					
+				
 				default:
 					System.out.println("Please Select Correct Option");
 			}
