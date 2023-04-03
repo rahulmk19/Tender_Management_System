@@ -13,7 +13,7 @@ public class DbUtils {
 
 		ResourceBundle rb = ResourceBundle.getBundle("dbdetails");
 
-		return DriverManager.getConnection(rb.getString("url"), (rb.getString("user")), (rb.getString("pass")));
+		return DriverManager.getConnection(rb.getString("url"),rb.getString("user"), rb.getString("pass"));
 
 	}
 

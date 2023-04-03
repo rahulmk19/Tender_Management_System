@@ -1,6 +1,9 @@
 package com.masai.DTO;
 
 public interface VendorDTO {
+	public void setId(int id);
+	
+	public int getId();
 	
 	public String getName();
 
@@ -26,7 +29,7 @@ public interface VendorDTO {
 
 	public void setPassword(String password);
 
-	public boolean isActive();
+	public int isActive();
 
-	public void setActive(boolean isActive);
+	public void setActive(int isActive);
 }
