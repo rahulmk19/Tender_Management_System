@@ -8,14 +8,17 @@ import com.masai.DAO.AdministratorDAO;
 import com.masai.DAO.AdministratorDAOimpl;
 import com.masai.DAO.VendorDao;
 import com.masai.DAO.VendorDaoImpl;
+import com.masai.DTO.Bidder;
 import com.masai.DTO.Tender;
 import com.masai.DTO.Vendor;
 import com.masai.DTO.VendorImpl;
+import com.masai.exception.BidderException;
+import com.masai.exception.TenderException;
 
 public class VendorUI {
 
 	public static void option(Scanner scanner, Vendor vendor) {
-		System.out.println("Welcome, " + vendor.getVender_name() + "!");
+		System.out.println("\nWelcome, " + vendor.getVender_name() + "!");
 		int choice;
 		do {
 			System.out.println("****Enter Your Choice****");
@@ -31,13 +34,13 @@ public class VendorUI {
 
 			switch (choice) {
 			case 1:
-//				view_CurrentTender();
+				view_CurrentOpenTender();
 				break;
 			case 2:
 //				Bid_Tender(scanner);
 				break;
 			case 3:
-//				view_Bid_history(scanner);
+				view_Bid_history(vendor);
 				break;
 			case 4:
 				update_vendor(vendor.getVender_id(), scanner);
@@ -53,6 +56,39 @@ public class VendorUI {
 			}
 		} while (choice != 6);
 
+	}
+
+	private static void view_CurrentOpenTender() {
+	    VendorDao vendorDao = new VendorDaoImpl();
+	    String status = "Open";
+	    try {
+	        List<Tender> openTenders = vendorDao.currentOpenStatusTender(status);
+	        if (!openTenders.isEmpty()) {
+	            for (Tender tender : openTenders) {
+	                System.out.println(tender);
+	            }
+	        } else {
+	            System.out.println("No Open Tenders Found\n");
+	        }
+	    } catch (TenderException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+	private static void view_Bid_history(Vendor vendor) {
+		VendorDao vendorDao = new VendorDaoImpl();
+		try {
+			List<Bidder> bidHistory = vendorDao.viewOwnBidHistory(vendor.getVender_id());
+			if (!bidHistory.isEmpty()) {
+				for (Bidder bid : bidHistory) {
+					System.out.println(bid);
+				}
+			} else {
+				System.out.println("No Bids Found\n");
+			}
+		} catch (BidderException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void update_vendor(String vendorId, Scanner scanner) {

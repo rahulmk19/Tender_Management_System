@@ -22,44 +22,43 @@ public class VendorDaoImpl implements VendorDao {
 
 	@Override
 	public Vendor AuthenticateVendor(String username) throws VendorException {
-	    Vendor vendor = null;
+		Vendor vendor = null;
 
-	    try {
-	        conn = DbUtils.getconnectionTodatabase();
-	        String SELECT_QUERY = "SELECT * FROM Vendor WHERE vender_email=?"; // Corrected typo
+		try {
+			conn = DbUtils.getconnectionTodatabase();
+			String SELECT_QUERY = "SELECT * FROM Vendor WHERE vender_email=?";
 
-	        PreparedStatement statement = conn.prepareStatement(SELECT_QUERY);
-	        statement.setString(1, username);
+			PreparedStatement statement = conn.prepareStatement(SELECT_QUERY);
+			statement.setString(1, username);
 
-	        ResultSet rs = statement.executeQuery();
+			ResultSet rs = statement.executeQuery();
 
-	        if (rs.next()) {
-	            String vender_id = rs.getString("vender_id");
-	            String vender_password = rs.getString("vender_password");
-	            String vender_name = rs.getString("vender_name");
-	            String vender_email = rs.getString("vender_email");
-	            String vender_mobileNumber = rs.getString("vender_mobileNumber");
-	            String vender_location = rs.getString("vender_location");
+			if (rs.next()) {
+				String vender_id = rs.getString("vender_id");
+				String vender_password = rs.getString("vender_password");
+				String vender_name = rs.getString("vender_name");
+				String vender_email = rs.getString("vender_email");
+				String vender_mobileNumber = rs.getString("vender_mobileNumber");
+				String vender_location = rs.getString("vender_location");
 
-	            vendor = new VendorImpl(vender_id, vender_password, vender_name, vender_email, vender_mobileNumber,
-	                    vender_location);
-	        } else {
-	            throw new VendorException("No Record Found"); // Corrected exception class name
-	        }
+				vendor = new VendorImpl(vender_id, vender_password, vender_name, vender_email, vender_mobileNumber,
+						vender_location);
+			} else {
+				throw new VendorException("No Record Found");
+			}
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        throw new VendorException("An error occurred during vendor authentication");
-	    } finally {
-	        try {
-	            DbUtils.CloseConnection(conn);
-	        } catch (Exception e2) {
-	            e2.printStackTrace();
-	        }
-	    }
-	    return vendor;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new VendorException("An error occurred during vendor authentication");
+		} finally {
+			try {
+				DbUtils.CloseConnection(conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return vendor;
 	}
-
 
 	@Override
 	public List<Tender> viewAllTender() throws TenderException {
@@ -81,9 +80,9 @@ public class VendorDaoImpl implements VendorDao {
 				String type = rs.getString(3);
 				int price = rs.getInt(4);
 				String location = rs.getString(5);
-				String status=rs.getString(6);
+				String status = rs.getString(6);
 
-				Tender tender = new TenderImpl(id, name, type, price, location,status);
+				Tender tender = new TenderImpl(id, name, type, price, location, status);
 				tenderList.add(tender);
 
 				if (tenderList.size() == 0)
@@ -104,21 +103,84 @@ public class VendorDaoImpl implements VendorDao {
 	}
 
 	@Override
-	public void placeBidAgainstTender(BidderImpl br) throws TenderException {
+	public void placeBidAgainstTender(BidderImpl input) throws TenderException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public Bidder viewStatusOfBid(String BidId) throws BidderException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Tender> currentOpenStatusTender(String openstatus) throws TenderException {
+		List<Tender> tenderList = new ArrayList<>();
+
+		try {
+			conn = DbUtils.getconnectionTodatabase();
+			String SELECT_QUERY = "SELECT * FROM Tender WHERE status=?";
+
+			PreparedStatement statement = conn.prepareStatement(SELECT_QUERY);
+			statement.setString(1, openstatus);
+			ResultSet rs = statement.executeQuery();
+
+			while (rs.next()) {
+				String id = rs.getString(1);
+				String name = rs.getString(2);
+				String type = rs.getString(3);
+				int price = rs.getInt(4);
+				String location = rs.getString(5);
+				String status = rs.getString(6);
+
+				Tender tender = new TenderImpl(id, name, type, price, location, status);
+				tenderList.add(tender);
+			}
+
+			if (tenderList.isEmpty()) {
+				throw new TenderException("No Open Tenders Found");
+			}
+		} catch (Exception e) {
+			throw new TenderException("An error occurred while retrieving open tenders");
+		} finally {
+			try {
+				DbUtils.CloseConnection(conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+
+		return tenderList;
 	}
 
 	@Override
-	public List<Bidder> viewOwnBidHistory() throws BidderException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Bidder> viewOwnBidHistory(String vendorId) throws BidderException {
+		List<Bidder> list = new ArrayList<>();
+
+		try {
+			conn = DbUtils.getconnectionTodatabase();
+			String SELECT_QUERY = "SELECT * FROM bidder WHERE vender_id = ?";
+
+			PreparedStatement statement = conn.prepareStatement(SELECT_QUERY);
+			statement.setString(1, vendorId);
+
+			ResultSet set = statement.executeQuery();
+
+			while (set.next()) {
+				String bid_id = set.getString(1);
+				String ten_id = set.getString(2);
+				String ven_id = set.getString(3);
+				int price = set.getInt(4);
+				String status = set.getString(5);
+
+				Bidder b = new BidderImpl(bid_id, ten_id, ven_id, price, status);
+				list.add(b);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				DbUtils.CloseConnection(conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return list;
 	}
 
 	@Override

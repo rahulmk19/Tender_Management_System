@@ -18,9 +18,9 @@ public interface VendorDao {
 
 	public void placeBidAgainstTender(BidderImpl br) throws TenderException;
 
-	public Bidder viewStatusOfBid(String BidId) throws BidderException;
+	public List<Tender> currentOpenStatusTender(String openstatus) throws TenderException;
 
-	public List<Bidder> viewOwnBidHistory() throws BidderException;
+	public List<Bidder> viewOwnBidHistory(String vendorId) throws BidderException ;
 
 	public void changeDetailsVendor(Vendor vendor);
 }
