@@ -1,6 +1,6 @@
 # dainty-swim-1179
 
-Tender Management System" – a comprehensive and efficient solution designed to streamline the complex process of managing tenders and bids. This project encompasses an array of features catering to both administrators and vendors, aimed at creating a seamless experience for tender management.
+Tender Management System" – A comprehensive and efficient solution designed to streamline the complex process of managing tenders and bids. This project encompasses an array of features catering to both administrators and vendors, aimed at creating a seamless experience for tender management.
 
 
 ✨✨✨ **Admin Feature** ✨✨✨
@@ -35,6 +35,7 @@ Tender Management System" – a comprehensive and efficient solution designed to
 
 
 🌟 Tools Used 🛠️
+
 MySQL: The powerful database management system facilitates secure storage and retrieval of critical data.
 JDBC: The Java Database Connectivity API enables seamless communication between the application and the database.
 Java: The project's core is built using Java, offering a versatile and object-oriented programming environment.
