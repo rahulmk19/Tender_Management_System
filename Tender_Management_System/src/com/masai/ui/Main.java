@@ -1,131 +1,94 @@
-package com.masai.UI;
+package com.masai.ui;
 
 import java.util.Scanner;
 
-import com.masai.DAO.DbUtils;
+import com.masai.DAO.VendorDao;
+import com.masai.DAO.VendorDaoImpl;
+import com.masai.DTO.Vendor;
+import com.masai.exception.VendorException;
 
 public class Main {
 
-//	static void VendorLogin(Scanner sc) throws NoRecordFoundException {
-//			
-//		if(IsVendorLogged.isLogged) {
-//				Vendor(sc);
-//		}else {
-//			System.out.println("Enter Username!");
-//			String username = sc.next();
-//			System.out.println("Enter Password!");
-//			String password = sc.next();	
-//		}	
-//	}
-//
-//	static void VendorSignUp(Scanner sc) throws NoRecordFoundException {
-//		
-//			
-//	}
+	static void Vendor(Scanner scanner) throws VendorException {
 
-	static void Vendor(Scanner input) {
+		VendorDao vendorDao = new VendorDaoImpl();
 
-		int choice = 0;
+		System.out.println("Enter username");
+		String username = scanner.next();
+		System.out.println("Enter password");
+		String password = scanner.next();
 
-		while (true) {
-			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
-			System.out.println("Welcome Vendor");
-			System.out.println("1: Login");
-			System.out.println("2: Sign Up");
-			choice = input.nextInt();
+		Vendor vendor = vendorDao.AuthenticateVendor(username);
 
-			try {
-
-				switch (choice) {
-				case 0:
-					return;
-				case 1:
-					VendorUI.login(input);
-					break;
-				case 2:
-					VendorUI.signUp(input);
-					break;
-				default:
-					System.out.println("Invalid choice! Please choose again.");
-					break;
-				}
-			} catch (Exception e) {
-				System.out.println("Invalid input! Please enter a number.");
-				input.next();
-				continue;
-			}
-
+		if (vendor.getVender_email().equals(username) && vendor.getVender_password().equals(password)) {
+			VendorUI.option(scanner, vendor);
+		} else {
+			System.out.println("Please Give a correct username and password");
+			return;
 		}
-
 	}
 
 	static void Administrator(Scanner input) {
-		System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
-		System.out.println("Welcome Administrator");
-		String username = "admin";
-		String password = "admin";
-		String choice;
-
 		System.out.print("Enter username: ");
 		String user = input.next();
 		System.out.print("Enter password: ");
 		String pass = input.next();
 
-		if (user.equals(username) && pass.equals(password)) {
-			System.out.println("Login successful.\n");
-
-			do {
-				// Menu
-				System.out.println("*** MENU ***");
-				System.out.println("1. View all vendors");
-				System.out.println("2. Create new tender");
-				System.out.println("3. View all tenders");
-				System.out.println("4. View all bids of a tender");
-				System.out.println("5. Assign tender to a vendor");
-				System.out.println("6. Logout");
-				System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
-
-				System.out.print("\nEnter your choice: ");
-				choice = input.next();
-
-				switch (choice) {
-
-				case "1":
-					AdministratorUI.viewVendors();
-					System.out.println("1: View all vendors...");
-					break;
-				case "2":
-					AdministratorUI.createTender(input);
-					System.out.println("2: Create new tender...");
-					break;
-				case "3":
-					AdministratorUI.viewTenders();
-					System.out.println("3: View all tenders...");
-					break;
-				case "4":
-					AdministratorUI.viewBids(input);
-					System.out.println("4: View all bids of a tender...");
-					break;
-				case "5":
-					AdministratorUI.assignTender(input);
-					System.out.println("5: Assign tender to a vendor...");
-					break;
-				case "6":
-					// Logout
-					System.out.println("6: Logout successful.");
-					break;
-				default:
-					System.out.println("Invalid choice.");
-					break;
-				}
-			} while (!choice.equals("6"));
-
-		} else {
-			System.out.println("Invalid Username and Password.");
+		if (!user.equals("Admin") || !pass.equals("Admin")) {
+			System.out.println("Please Fill The Correct Username and Password\n");
+			return;
 		}
+		System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
+		System.out.println("Welcome Administrator");
+		String choice;
+
+		do {
+			System.out.println("*** MENU ***");
+			System.out.println("1. Register Vendor");
+			System.out.println("2. View All Vendors");
+			System.out.println("3. Create New Tender");
+			System.out.println("4. View All Tenders");
+			System.out.println("5. View All Bids Against A Tender");
+			System.out.println("6. Assign Tender To A Vendor");
+			System.out.println("0. Logout");
+			System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
+
+			System.out.print("\nEnter your choice: ");
+			choice = input.next();
+
+			switch (choice) {
+
+			case "1":
+				AdministratorUI.register(input);
+				break;
+			case "2":
+				AdministratorUI.viewVendors();
+				break;
+			case "3":
+				AdministratorUI.createTender(input);
+				break;
+			case "4":
+				AdministratorUI.viewTenders();
+				break;
+			case "5":
+				AdministratorUI.viewBids(input);
+				break;
+			case "6":
+				AdministratorUI.assignTender(input);
+				break;
+			case "0":
+				// Logout
+				System.out.println("0: Logout successful.");
+				break;
+			default:
+				System.out.println("Invalid choice.");
+				break;
+			}
+		} while (!choice.equals("0"));
+
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws VendorException {
 		Scanner sc = new Scanner(System.in);
 		int choice = 0;
 

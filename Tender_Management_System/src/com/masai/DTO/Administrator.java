@@ -1,35 +1,24 @@
 package com.masai.DTO;
 
-import java.time.LocalDate;
-
 public interface Administrator {
-	
-	public int getTender_id();
-	
-	public void setTender_id(int tender_id);
-	
-	public String getTender_name();
-	
-	public void setTender_name(String tender_name);
-	
-	public String getDescription();
-	
-	public void setDescription(String description);
-	
-	public LocalDate getStart_date();
-	
-	public void setStart_date(LocalDate start_date);
-	
-	public LocalDate getEnd_date();
-	
-	public void setEnd_date(LocalDate end_date);
-	
-	public String getStatus();
 
-	public void setStatus(String status);
+	public String getAdmin_id();
 
-	public void setId(int int1);
-	
-	
+	public void setAdmin_id(String admin_id);
 
+	public String getAdmin_password();
+
+	public void setAdmin_password(String admin_password);
+
+	public String getAdmin_name();
+
+	public void setAdmin_name(String admin_name);
+
+	public String getAdmin_email();
+
+	public void setAdmin_email(String admin_email);
+
+	public String getAdmin_city();
+
+	public void setAdmin_city(String admin_city);
 }
