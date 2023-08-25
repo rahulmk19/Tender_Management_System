@@ -1,7 +1,7 @@
 # dainty-swim-1179
 
-Whenever a company requires a service / merchandise , a tender is floated. Company maintains an empaneled list of Vendors. An empaneled vendor can only bid for a tender.
-Every vendor can bid only once against each tender. Against each tender there may be bids from several vendors. The company will then select the most suitable bid and place the order to that vendor.
+Tender Management System" – a comprehensive and efficient solution designed to streamline the complex process of managing tenders and bids. This project encompasses an array of features catering to both administrators and vendors, aimed at creating a seamless experience for tender management.
+
 
 ✨✨✨ **Admin Feature** ✨✨✨
 
@@ -34,10 +34,8 @@ Every vendor can bid only once against each tender. Against each tender there ma
 ✨ Vendor Can Change his Password
 
 
-✨✨✨ **Tools Used** 🛠️
-My SQL
-JDBC
-Java
-SpringBoot
-Java
+🌟 Tools Used 🛠️
+MySQL: The powerful database management system facilitates secure storage and retrieval of critical data.
+JDBC: The Java Database Connectivity API enables seamless communication between the application and the database.
+Java: The project's core is built using Java, offering a versatile and object-oriented programming environment.
  
