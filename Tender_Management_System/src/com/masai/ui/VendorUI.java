@@ -22,7 +22,7 @@ public class VendorUI {
 		int choice;
 		do {
 			System.out.println("****Enter Your Choice****");
-			System.out.println("1. View Current Tender Status");
+			System.out.println("1. View Tender which Status has Open");
 			System.out.println("2. Place Bid against a Tender");
 			System.out.println("3. View Bid History");
 			System.out.println("4. Update Details of User");
