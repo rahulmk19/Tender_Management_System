@@ -5,7 +5,7 @@ Tender Management System" – A comprehensive and efficient solution designed to
 
 ✨✨✨ **Admin Feature** ✨✨✨
 
-✨ Register New Vendor. (Assign a new username and password to him)\
+✨ Register New Vendor. (Assign a new username and password to him)
 
 ✨ View All The Vendors
 
