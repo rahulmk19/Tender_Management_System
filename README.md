@@ -1,4 +1,3 @@
-# dainty-swim-1179
 <h1>Tender Management System</h1>
 <img align="center" alt="logo" width="400" src="https://rahulmk19.github.io/Images/Tender%20Management%20System.gif">
 <h2>🌟  Description</h2>
