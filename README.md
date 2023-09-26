@@ -5,6 +5,9 @@ Tender Management System" – A comprehensive and efficient solution designed to
 
 <h2>ER Diagram</h2>
 <img align="center" alt="ErDiagram" width="1200"  src="https://github.com/rahulmk19/rahulmk19.github.io/blob/master/Images/Tender%20mangement%20system%20DR.png">
+
+<h2>Video Link Of Project</h2>
+<p>https://drive.google.com/drive/folders/11Ujb610FM47bS5PhIZHyoqmkhKKAx1iX?usp=drive_link</p>
 <h2>🌟 Application Features</h2>
 <h3>For Admin Login</h3>
 <h4>✨Username: Admin</h4>
@@ -24,6 +27,7 @@ Tender Management System" – A comprehensive and efficient solution designed to
 
 ✨ Assign Tender To A Vendor
 
+   View All Tenders Already Assigned
 
 <h3>Vendor Features</h3>
 
@@ -38,6 +42,8 @@ Tender Management System" – A comprehensive and efficient solution designed to
 ✨ Vendor Can View his own Bid History
 
 ✨ Vendor Can Change his Password
+
+   View All Approved Tender
 
 
 <h2>🌟 Tools Used 🛠️</h2>
