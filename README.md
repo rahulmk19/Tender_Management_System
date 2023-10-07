@@ -28,7 +28,7 @@ Tender Management System" – A comprehensive and efficient solution designed to
 
 ✨ Assign Tender To A Vendor
 
-   View All Tenders Already Assigned
+✨ View All Tenders Already Assigned
 
 <h3>Vendor Features</h3>
 
@@ -44,7 +44,7 @@ Tender Management System" – A comprehensive and efficient solution designed to
 
 ✨ Vendor Can Change his Password
 
-   View All Approved Tender
+✨ View All Approved Tender
 
 
 <h2>🌟 Tools Used 🛠️</h2>
