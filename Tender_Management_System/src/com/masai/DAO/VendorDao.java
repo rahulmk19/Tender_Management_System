@@ -23,4 +23,6 @@ public interface VendorDao {
 	public List<Bidder> viewOwnBidHistory(String vendorId) throws BidderException ;
 
 	public void changeDetailsVendor(Vendor vendor);
+
+	public List<Bidder> view_ApprovedTender(String vendor_Id);
 }

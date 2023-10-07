@@ -15,11 +15,13 @@ public interface AdministratorDAO {
 
 	public List<Vendor> viewAllVendors() throws VendorException;
 
-	public void createTender(Tender tender) throws TenderException;
+	public void createTender(Tender tender) throws TenderException, ClassNotFoundException;
 
 	public List<Tender> viewAllTenders() throws TenderException;
 
-	public List<Bidder> viewAllBidsOfTenders(String tender_id) throws BidderException ;
+	public List<Bidder> viewAllBidsOfTenders(String tender_id) throws BidderException;
 
 	public void assignTenderToVender(String venderId, String tenderId) throws BidderException;
+
+	public List<Bidder> viewAllAssingedTender() throws TenderException;
 }

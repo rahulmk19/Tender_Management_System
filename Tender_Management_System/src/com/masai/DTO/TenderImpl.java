@@ -7,7 +7,7 @@ public class TenderImpl implements Tender {
 	private String tender_id;
 	private String tender_name;
 	private String type;
-	private int tender_price;
+	private long tender_price;
 	private String tender_location;
 	private String status;
 
@@ -15,7 +15,7 @@ public class TenderImpl implements Tender {
 		super();
 	}
 
-	public TenderImpl(String tender_id, String tender_name, String type, int tender_price, String tender_location) {
+	public TenderImpl(String tender_id, String tender_name, String type, long tender_price, String tender_location) {
 		super();
 		this.tender_id = tender_id;
 		this.tender_name = tender_name;
@@ -24,7 +24,7 @@ public class TenderImpl implements Tender {
 		this.tender_location = tender_location;
 	}
 
-	public TenderImpl(String tender_id, String tender_name, String type, int tender_price, String tender_location,
+	public TenderImpl(String tender_id, String tender_name, String type, long tender_price, String tender_location,
 			String status) {
 		super();
 		this.tender_id = tender_id;
@@ -59,11 +59,11 @@ public class TenderImpl implements Tender {
 		this.type = type;
 	}
 
-	public int getTender_price() {
+	public long getTender_price() {
 		return tender_price;
 	}
 
-	public void setTender_price(int tender_price) {
+	public void setTender_price(long tender_price) {
 		this.tender_price = tender_price;
 	}
 
@@ -85,8 +85,8 @@ public class TenderImpl implements Tender {
 
 	@Override
 	public String toString() {
-		return "[tender_id=" + tender_id + ", tender_name=" + tender_name + ", type=" + type + ", tender_price="
-				+ tender_price + ", tender_location=" + tender_location + ", status=" + status + "]";
+		return "[Id=" + tender_id + ", Name=" + tender_name + ", Type=" + type + ", Price=" + tender_price
+				+ ", Location=" + tender_location + ", Status=" + status + "]";
 	}
 
 	@Override

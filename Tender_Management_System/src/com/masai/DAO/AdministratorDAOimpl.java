@@ -3,6 +3,7 @@ package com.masai.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +14,17 @@ import com.masai.DTO.TenderImpl;
 import com.masai.DTO.Vendor;
 import com.masai.DTO.VendorImpl;
 import com.masai.exception.BidderException;
-import com.masai.exception.SomethingWentWrongException;
 import com.masai.exception.TenderException;
 import com.masai.exception.VendorException;
 
 public class AdministratorDAOimpl implements AdministratorDAO {
+
+	public static final String ANSI_RESET = "\u001B[0m";
+	public static final String ANSI_BOLD = "\u001B[1m";
+	public static final String ANSI_RED = "\u001B[31m";
+	public static final String ANSI_GREEN = "\u001B[32m";
+	public static final String ANSI_YELLOW = "\u001B[33m";
+	public static final String ANSI_MAGENTA = "\u001B[35m";
 
 	static Connection conn = null;
 
@@ -38,9 +45,10 @@ public class AdministratorDAOimpl implements AdministratorDAO {
 			int n = ps.executeUpdate();
 
 			if (n > 0) {
-				System.out.println("Vendor Register Succesfully");
+				System.out.println(ANSI_BOLD + ANSI_RED + "Vendor Register Succesfully" + ANSI_RESET);
 			} else
-				throw new TenderException("Tender already exits with this id " + vendor.getVender_id());
+				throw new TenderException(ANSI_BOLD + ANSI_RED + "Vendor already exits with this id "
+						+ vendor.getVender_id() + ANSI_RESET);
 
 		} catch (Exception e) {
 
@@ -59,15 +67,16 @@ public class AdministratorDAOimpl implements AdministratorDAO {
 		List<Vendor> vendorList = new ArrayList<>();
 		try {
 			conn = DbUtils.getconnectionTodatabase();
-			String SELECT_QUERY = "SELECT * FROM VENDOR";
+			String SELECT_QUERY = "SELECT * FROM VENDOR ORDER BY vender_email";
 
 			PreparedStatement statement = conn.prepareStatement(SELECT_QUERY);
 
 			ResultSet set = statement.executeQuery();
 
 			if (set == null)
-				throw new VendorException("NO RECORD FOUND");
+				throw new VendorException(ANSI_RED + "No Vendor Found !" + ANSI_RESET);
 			else {
+				System.out.println(ANSI_BOLD + ANSI_YELLOW + "\n** All Vendor Details **" + ANSI_RESET);
 				while (set.next()) {
 					String id = set.getString(1);
 					String password = set.getString(2);
@@ -94,35 +103,28 @@ public class AdministratorDAOimpl implements AdministratorDAO {
 		return vendorList;
 	}
 
-	@Override
-	public void createTender(Tender tender) throws TenderException {
-
-		try {
-			conn = DbUtils.getconnectionTodatabase();
-			String INSERT_QUERY = "INSERT INTO TENDER VALUES(?,?,?,?,?)";
+	public void createTender(Tender tender) throws TenderException, ClassNotFoundException {
+		try (Connection conn = DbUtils.getconnectionTodatabase()) {
+			String INSERT_QUERY = "INSERT INTO TENDER (tender_id, tender_name, type, tender_price, tender_location) VALUES(?,?,?,?,?)";
 			PreparedStatement statement = conn.prepareStatement(INSERT_QUERY);
 
 			statement.setString(1, tender.getTender_id());
 			statement.setString(2, tender.getTender_name());
 			statement.setString(3, tender.getType());
-			statement.setInt(4, tender.getTender_price());
+			statement.setLong(4, tender.getTender_price());
 			statement.setString(5, tender.getTender_location());
 
 			int num = statement.executeUpdate();
-			if (num > 0)
-				System.out.println("\nTender Added Successfully In Database\n");
-			else {
-				throw new TenderException("Tender already exits with this id " + tender.getTender_id());
+			if (num > 0) {
+				System.out.println(ANSI_BOLD + ANSI_RED + "\nTender Added Successfully\n" + ANSI_RESET);
+			} else {
+				throw new TenderException(ANSI_BOLD + ANSI_RED + "Tender already exists with this id "
+						+ tender.getTender_id() + ANSI_RESET);
 			}
-		} catch (Exception e) {
-			System.out.println("Tender already exits with this id " + tender.getTender_id());
-
-		} finally {
-			try {
-				DbUtils.CloseConnection(conn);
-			} catch (Exception e2) {
-				System.out.println("Something went wrong");
-			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new TenderException(
+					ANSI_BOLD + ANSI_RED + "An error occurred while creating the tender." + ANSI_RESET);
 		}
 	}
 
@@ -131,28 +133,31 @@ public class AdministratorDAOimpl implements AdministratorDAO {
 		List<Tender> tenderList = new ArrayList<>();
 		try {
 			conn = DbUtils.getconnectionTodatabase();
-			String SELECT_QUERY = "SELECT * FROM Tender";
+			String SELECT_QUERY = "SELECT * FROM Tender ORDER BY tender_id";
 
 			PreparedStatement statement = conn.prepareStatement(SELECT_QUERY);
 
 			ResultSet rs = statement.executeQuery();
 
 			if (rs == null)
-				throw new TenderException("No Rocord Found");
+				throw new TenderException(ANSI_RED + "No Tender Found" + ANSI_RESET);
 
-			while (rs.next()) {
-				String id = rs.getString(1);
-				String name = rs.getString(2);
-				String type = rs.getString(3);
-				int price = rs.getInt(4);
-				String location = rs.getString(5);
-				String status = rs.getString(6);
+			else {
+				System.out.println(ANSI_BOLD + ANSI_YELLOW + "\n** All Tender Details **" + ANSI_RESET);
+				while (rs.next()) {
+					String id = rs.getString(1);
+					String name = rs.getString(2);
+					String type = rs.getString(3);
+					int price = rs.getInt(4);
+					String location = rs.getString(5);
+					String status = rs.getString(6);
 
-				Tender tender = new TenderImpl(id, name, type, price, location, status);
-				tenderList.add(tender);
+					Tender tender = new TenderImpl(id, name, type, price, location, status);
+					tenderList.add(tender);
 
-				if (tenderList.size() == 0)
-					throw new TenderException("No Record found with tenderList");
+					if (tenderList.size() == 0)
+						throw new TenderException(ANSI_RED + "No Tender Found !" + ANSI_RESET);
+				}
 			}
 
 		} catch (Exception e) {
@@ -175,7 +180,7 @@ public class AdministratorDAOimpl implements AdministratorDAO {
 
 			conn = DbUtils.getconnectionTodatabase();
 
-			String SELECT_QUERY = "SELECT * FROM BIDDER WHERE tender_id= ?";
+			String SELECT_QUERY = "SELECT * FROM BIDDER WHERE tender_id= ? ORDER BY bid_price desc";
 			PreparedStatement statement = conn.prepareStatement(SELECT_QUERY);
 
 			statement.setString(1, tender_id);
@@ -184,10 +189,10 @@ public class AdministratorDAOimpl implements AdministratorDAO {
 
 			while (set.next()) {
 
-				String id = set.getString(1);
-				String vendorId = set.getString(2);
-				String tenderID = set.getString(3);
-				int price = set.getInt(4);
+				int id = set.getInt(1);
+				String tenderID = tender_id;
+				String vendorId = set.getString(3);
+				Long price = set.getLong(4);
 				String status = set.getString(5);
 
 				Bidder bider = new BidderImpl(id, tenderID, vendorId, price, status);
@@ -196,9 +201,10 @@ public class AdministratorDAOimpl implements AdministratorDAO {
 			if (!bidderList.isEmpty())
 				return bidderList;
 			if (bidderList.isEmpty())
-				throw new BidderException("NO BIDDER FOUND!");
+				throw new BidderException(ANSI_RED + "No Bidder Found !" + ANSI_RESET);
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println(ANSI_BOLD + ANSI_YELLOW + "\n** All Vendor Details **" + ANSI_RESET);
 		} finally {
 			try {
 				DbUtils.CloseConnection(conn);
@@ -210,31 +216,102 @@ public class AdministratorDAOimpl implements AdministratorDAO {
 	}
 
 	@Override
-	public void assignTenderToVender(String venderId, String tenderId) throws BidderException {
+	public void assignTenderToVender(String vendorId, String tenderId) throws BidderException {
+
+		Connection conn = null;
+
 		try {
 			conn = DbUtils.getconnectionTodatabase();
+			conn.setAutoCommit(false); // Start a transaction
 
-			String UPDATE_QUERY = "UPDATE bidder SET bid_status = 'Close' where vender_id = ? AND tender_id = ?";
-			PreparedStatement statement = conn.prepareStatement(UPDATE_QUERY);
+			String UPDATE_BIDDER_QUERY = "UPDATE bidder SET bid_status = 'Close' WHERE vender_id = ? AND tender_id = ? AND bid_status = 'Open'";
+			PreparedStatement bidderStatement = conn.prepareStatement(UPDATE_BIDDER_QUERY);
+			bidderStatement.setString(1, vendorId);
+			bidderStatement.setString(2, tenderId);
 
-			statement.setString(1, venderId);
-			statement.setString(2, tenderId);
+			int num = bidderStatement.executeUpdate();
+			if (num > 0) {
+				System.out.println(ANSI_BOLD + ANSI_RED + tenderId + " Tender Assigned Successfully to Vendor "
+						+ vendorId + ANSI_RESET);
 
-			int n = statement.executeUpdate();
-			if (n > 0) {
-				System.out.println("Tender Assigned Successfully");
+				String UPDATE_TENDER_QUERY = "UPDATE Tender SET status = 'Close' WHERE tender_id = ?";
+				PreparedStatement tenderStatement = conn.prepareStatement(UPDATE_TENDER_QUERY);
+				tenderStatement.setString(1, tenderId);
+
+				int tenderUpdateNum = tenderStatement.executeUpdate();
+				if (tenderUpdateNum > 0) {
+					System.out.println("Tender " + tenderId + " status updated to 'Close' successfully.");
+					conn.commit();
+				} else {
+					System.out
+							.println(ANSI_RED + "Something went wrong while updating the Tender status." + ANSI_RESET);
+					conn.rollback();
+				}
 			} else {
-				throw new BidderException("Failed to assign tender");
+				System.out.println(ANSI_RED + "Something went wrong. Not able to assign the Tender." + ANSI_RESET);
+				conn.rollback();
 			}
 		} catch (Exception e) {
-			throw new BidderException("An error occurred while assigning tender");
+			e.printStackTrace();
+			try {
+				if (conn != null) {
+					conn.rollback();
+				}
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
 		} finally {
 			try {
-				DbUtils.CloseConnection(conn);
+				if (conn != null) {
+					conn.setAutoCommit(true);
+					DbUtils.CloseConnection(conn);
+				}
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
 		}
 	}
 
+	@Override
+	public List<Bidder> viewAllAssingedTender() throws TenderException {
+		List<Bidder> bidderList = new ArrayList<>();
+		try {
+
+			conn = DbUtils.getconnectionTodatabase();
+
+			String SELECT_QUERY = "SELECT * FROM BIDDER WHERE bid_status= ? ORDER BY tender_id";
+			PreparedStatement statement = conn.prepareStatement(SELECT_QUERY);
+
+			String bid_status = "Close";
+			statement.setString(1, bid_status);
+
+			ResultSet set = statement.executeQuery();
+
+			while (set.next()) {
+
+				int id = set.getInt(1);
+				String tenderID = set.getString(2);
+				String vendorId = set.getString(3);
+				Long price = set.getLong(4);
+				String status = set.getString(5);
+
+				Bidder bider = new BidderImpl(id, tenderID, vendorId, price, status);
+				bidderList.add(bider);
+			}
+			if (!bidderList.isEmpty())
+				return bidderList;
+			if (bidderList.isEmpty())
+				System.out.println(ANSI_BOLD + ANSI_RED + "No Tender Assigned To Any One !" + ANSI_RESET);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(ANSI_BOLD + ANSI_YELLOW + "\n** All Assigned Tender **" + ANSI_RESET);
+		} finally {
+			try {
+				DbUtils.CloseConnection(conn);
+			} catch (final Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return bidderList;
+	}
 }

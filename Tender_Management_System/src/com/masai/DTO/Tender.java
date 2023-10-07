@@ -14,9 +14,9 @@ public interface Tender {
 
 	public void setType(String type);
 
-	public int getTender_price();
+	public long getTender_price();
 
-	public void setTender_price(int tender_price);
+	public void setTender_price(long tender_price);
 
 	public String getTender_location();
 
